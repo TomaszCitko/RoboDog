@@ -1,6 +1,6 @@
 ﻿using System;
 using RoboDog.Enums;
-using RoboDog = RoboDog.Models.RoboDog;
+using RoboDog.Models;
 
 namespace RoboDog.Services
 {
@@ -15,10 +15,7 @@ namespace RoboDog.Services
             Array breedValues = Enum.GetValues(typeof(DogBreed));
             Random randomBreed = new Random();
             DogBreed dogBreed = (DogBreed)breedValues.GetValue(randomBreed.Next(breedValues.Length));
-            Models.RoboDog roboDog = new Models.RoboDog(randomAge, dogName, dogBreed);
-            return roboDog;
-
-
+            return new Models.RoboDog(randomAge, dogName, dogBreed);
 
         }
     }
