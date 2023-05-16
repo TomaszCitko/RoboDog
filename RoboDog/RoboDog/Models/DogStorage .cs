@@ -5,8 +5,18 @@ namespace RoboDog.Models
 {
     public class DogStorage
     {
+        private  static DogStorage? _instance { get; set; }
         public List<RoboDog> DogsList { get; set; } = new List<RoboDog>();
 
+        public static DogStorage CreateDogStorage()
+        {
+            if (_instance == null)
+            {
+                _instance = new DogStorage();
+            }
+            return _instance;
+        }
+        
         public void AddDogToList(RoboDog dog)
         {
             DogsList.Add(dog);
