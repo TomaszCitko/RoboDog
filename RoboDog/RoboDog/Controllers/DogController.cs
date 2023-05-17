@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using RoboDog.Enums;
-using RoboDog.Models;
 using RoboDog.Services;
 
 namespace RoboDog.Controllers
@@ -9,59 +8,44 @@ namespace RoboDog.Controllers
     [Route("api/[controller]")]
     public class DogController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("GetAll")]
         public List<Models.RoboDog> GetAll()
         {
             DogStorage dogStorage = DogStorage.CreateDogStorage();
-            return dogStorage.ReturnListOfAllDogs();
+            List<Models.RoboDog> doggieList = dogStorage.ReturnListOfAllDogs();
+            return doggieList;
         }
-        [HttpGet]
-        public Models.RoboDog GetRandomDog()
+        [HttpGet("GetRandom")]
+        public ActionResult GetRandomDog()
         {
             DogCreator dogCreator = new DogCreator();
-            return dogCreator.CreateRandomDog();
+            Models.RoboDog doggie = dogCreator.CreateRandomDog();
+            DogStorage dogStorage = DogStorage.CreateDogStorage();
+            dogStorage.AddDogToList(doggie);
+            return Ok($"{doggie.Name}/{doggie.Breed}/{doggie.Age}");
         }
 
         [HttpPost]
-        public void AddDog([FromBody] Models.RoboDog doggie)
+        public ActionResult AddDog([FromBody] int age, int name, int breed)
         {
             DogStorage dogStorage = DogStorage.CreateDogStorage();
+            DogName dogName = (DogName)name;
+            DogBreed dogBreed = (DogBreed)breed;
+            Models.RoboDog doggie = new Models.RoboDog(age, dogName, dogBreed);
             dogStorage.AddDogToList(doggie);
+            return Ok($"{doggie.Name} - Breed: {doggie.Breed} - Age: {doggie.Age}");
+
         }
 
         [HttpPut("{name}")]
-        public void UpdateDog(DogName dogName)
+        public ActionResult UpdateDog(DogName dogName)
         {
             DogStorage dogStorage = DogStorage.CreateDogStorage();
-            dogStorage.UpdateNameAndAge(dogName);
+            dogStorage.UpdateBreedAndAge(dogName);
+            return Ok();
         }
     }
     
 
 
 }
-//        private static readonly string[] Summaries = new[]
-//        {
-//            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-//        };
-//    }
-//}
-    //    private readonly ILogger<DogController> _logger;
-
-//    public DogController(ILogger<DogController> logger)
-//    {
-//        _logger = logger;
-//    }
-
-//    [HttpGet(Name = "GetWeatherForecast")]
-//    public IEnumerable<WeatherForecast> Get()
-//    {
-//        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-//        {
-//            Date = DateTime.Now.AddDays(index),
-//            TemperatureC = Random.Shared.Next(-20, 55),
-//            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-//        })
-//        .ToArray();
-//    }
-//}

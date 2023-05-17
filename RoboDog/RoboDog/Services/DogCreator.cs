@@ -8,7 +8,7 @@ namespace RoboDog.Services
     {
         public Models.RoboDog CreateRandomDog()
         {
-            int randomAge = new Random().Next(0 - 20);
+            int randomAge = new Random().Next(1,19);
             Array nameValues = Enum.GetValues(typeof(DogName));
             Random randomName = new Random();
             DogName dogName = (DogName)nameValues.GetValue(randomName.Next(nameValues.Length));

@@ -1,12 +1,11 @@
 ﻿using RoboDog.Enums;
-using RoboDog.Services;
 
-namespace RoboDog.Models
+namespace RoboDog.Services
 {
-    public class DogStorage
+    public class DogStorage : IDogStorage
     {
-        private  static DogStorage? _instance { get; set; }
-        public List<RoboDog> DogsList { get; set; } = new List<RoboDog>();
+        private static DogStorage? _instance { get; set; }
+        public List<Models.RoboDog> DogsList { get; set; } = new List<Models.RoboDog>();
 
         public static DogStorage CreateDogStorage()
         {
@@ -16,26 +15,26 @@ namespace RoboDog.Models
             }
             return _instance;
         }
-        
-        public void AddDogToList(RoboDog dog)
+
+        public void AddDogToList(Models.RoboDog dog)
         {
             DogsList.Add(dog);
         }
         public void AddRandomDogToList()
         {
             DogCreator dogCreator = new DogCreator();
-            RoboDog dog = dogCreator.CreateRandomDog();
+            Models.RoboDog dog = dogCreator.CreateRandomDog();
             DogsList.Add(dog);
         }
 
-        public List<RoboDog> ReturnListOfAllDogs()
+        public List<Models.RoboDog> ReturnListOfAllDogs()
         {
             return DogsList;
         }
 
-        public void UpdateNameAndAge(DogName dogName)
+        public void UpdateBreedAndAge(DogName dogName)
         {
-            RoboDog doggie = DogsList.Where(x => x.Name == dogName).FirstOrDefault();
+            Models.RoboDog doggie = DogsList.Where(x => x.Name == dogName).FirstOrDefault();
             Console.WriteLine("Please input dog's age");
             doggie.Age = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Please input dog's breed via number (i.e. 1 = Blablador and so on");
