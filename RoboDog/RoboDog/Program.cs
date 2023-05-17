@@ -15,10 +15,7 @@ namespace RoboDog
             builder.Services.AddScoped<IDogStorage, DogStorage>();
             builder.Services.AddSingleton<DogStorage>();
 
-            builder.Services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new Int32ConverterJSON());
-            }); ;
+            builder.Services.AddControllers();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

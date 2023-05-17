@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RoboDog.Enums;
 using RoboDog.Services;
+using RoboDog = RoboDog.Models.RoboDog;
 
 namespace RoboDog.Controllers
 {
@@ -26,23 +27,24 @@ namespace RoboDog.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddDog([FromBody] int age, int name, int breed)
+        public ActionResult AddDog([FromBody] Models.RoboDog doggie)
         {
             DogStorage dogStorage = DogStorage.CreateDogStorage();
-            DogName dogName = (DogName)name;
-            DogBreed dogBreed = (DogBreed)breed;
-            Models.RoboDog doggie = new Models.RoboDog(age, dogName, dogBreed);
             dogStorage.AddDogToList(doggie);
-            return Ok($"{doggie.Name} - Breed: {doggie.Breed} - Age: {doggie.Age}");
+            return Ok($"Name: {doggie.Name} | Breed: {doggie.Breed} | Age: {doggie.Age}");
+
 
         }
 
         [HttpPut("{name}")]
-        public ActionResult UpdateDog(DogName dogName)
+        public ActionResult UpdateDog(string name, Models.RoboDog doggie)
         {
             DogStorage dogStorage = DogStorage.CreateDogStorage();
-            dogStorage.UpdateBreedAndAge(dogName);
-            return Ok();
+            Models.RoboDog foundDog = dogStorage.DogFinder(name);
+            Models.RoboDog oldDog = new Models.RoboDog(foundDog.Age, foundDog.Name, foundDog.Breed);
+            dogStorage.UpdateBreedAndAge(foundDog, doggie);
+           
+            return Ok($"Name: {name}\n Previous age: {oldDog.Age}, previous breed: {oldDog.Breed}\n New age: {foundDog.Age}, New breed: {foundDog.Breed}\n");
         }
     }
     

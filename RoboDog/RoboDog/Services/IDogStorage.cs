@@ -12,7 +12,7 @@ namespace RoboDog.Services
         
         public List<Models.RoboDog> ReturnListOfAllDogs();
 
-        public void UpdateBreedAndAge(DogName dogName);
+        public void UpdateBreedAndAge(Models.RoboDog oldDoggie, Models.RoboDog newDoggie);
 
     }
 }

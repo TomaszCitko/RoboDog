@@ -1,4 +1,5 @@
-﻿using RoboDog.Enums;
+﻿using Newtonsoft.Json.Linq;
+using RoboDog.Enums;
 
 namespace RoboDog.Services
 {
@@ -32,13 +33,17 @@ namespace RoboDog.Services
             return DogsList;
         }
 
-        public void UpdateBreedAndAge(DogName dogName)
+        public Models.RoboDog DogFinder(string name)
         {
+            DogName dogName = (DogName)Enum.Parse(typeof(DogName), name);
             Models.RoboDog doggie = DogsList.Where(x => x.Name == dogName).FirstOrDefault();
-            Console.WriteLine("Please input dog's age");
-            doggie.Age = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please input dog's breed via number (i.e. 1 = Blablador and so on");
-            doggie.Breed = (DogBreed)Convert.ToInt32(Console.ReadLine());
+            return doggie;
         }
+        public void UpdateBreedAndAge(Models.RoboDog oldDoggie, Models.RoboDog newDoggie)
+        {
+            oldDoggie.Age = newDoggie.Age;
+            oldDoggie.Breed = newDoggie.Breed;
+        }
+
     }
 }
